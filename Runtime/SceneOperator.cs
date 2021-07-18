@@ -12,13 +12,18 @@ using UnityEditor;
 
 using TMPro;
 
-//TODO: think if there is any reason to keep this as MonoBehaviour.
+//TODO: Think if there is any reason to keep this as MonoBehaviour.
 public class SceneOperator : MonoBehaviour
 {
 	[SerializeField] private UnityEvent<float> _onLoadingSceneAsync;
-	public UnityEvent<float> _OnLoadingSceneAsync { get { return this._onLoadingSceneAsync; } }
+	public UnityEvent<float> _OnLoadingSceneAsync => this._onLoadingSceneAsync;
 
 	public void LoadSceneAsync(int sceneBuildIndex, LoadSceneMode loadSceneMode = LoadSceneMode.Single) => SceneController._Instance.LoadSceneAsync(sceneBuildIndex, loadSceneMode, this._onLoadingSceneAsync);
+
+	#region General
+	public void LoadScene(int sceneBuildIndex, LoadSceneMode loadSceneMode) => SceneController._Instance.LoadScene(sceneBuildIndex: sceneBuildIndex, loadSceneMode: loadSceneMode);
+	public void LoadScene(int sceneBuildIndex) => SceneController._Instance.LoadScene(sceneBuildIndex: sceneBuildIndex);
+	#endregion
 
 	#region Previous
 	public void LoadPreviousScene(LoadSceneMode loadSceneMode) => SceneController._Instance.LoadPreviousScene(loadSceneMode);
