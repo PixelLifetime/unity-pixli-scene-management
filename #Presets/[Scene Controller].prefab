@@ -46,3 +46,6 @@ MonoBehaviour:
   _onLoadingSceneAsync:
     m_PersistentCalls:
       m_Calls: []
+  _runtimeScene:
+    sceneAsset: {fileID: 102900000, guid: b9fc9b921c9c6e942beb72d46da3298c, type: 3}
+    scenePath: Assets/{#}PixLi/unity-pixli-scene-management/#Presets/[Runtime][Scene].unity

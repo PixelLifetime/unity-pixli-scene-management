@@ -52,6 +52,14 @@ public class SceneOperator : MonoBehaviour
 	public void LoadNextSceneAsync() => this.LoadNextSceneAsync(LoadSceneMode.Single);
 	#endregion
 
+	#region Scene Reference
+	public void LoadScene(SceneReference sceneReference, LoadSceneMode loadSceneMode) => SceneController._Instance.LoadScene(sceneReference: sceneReference, loadSceneMode: loadSceneMode);
+	public void LoadScene(SceneReference sceneReference) => SceneController._Instance.LoadScene(sceneReference: sceneReference);
+
+	public void LoadScene(SceneReferenceCollection sceneReferenceCollection, LoadSceneMode loadSceneMode) => SceneController._Instance.LoadScene(sceneReferenceCollection: sceneReferenceCollection, loadSceneMode: loadSceneMode);
+	public void LoadScene(SceneReferenceCollection sceneReferenceCollection) => SceneController._Instance.LoadScene(sceneReferenceCollection: sceneReferenceCollection);
+	#endregion
+
 	public void Exit() => SceneController._Instance.Exit();
 
 #if UNITY_EDITOR

@@ -146,7 +146,60 @@ public class SceneController : MonoBehaviourSingleton<SceneController>
 		this.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex, loadSceneMode);
 	}
 	public void LoadActiveSceneAsync() => this.LoadActiveSceneAsync(LoadSceneMode.Single);
-	
+
+	#endregion
+
+	#region Scene Reference
+
+	public void LoadScene(SceneReference sceneReference, LoadSceneMode loadSceneMode)
+	{
+		SceneManager.LoadScene(sceneReference, loadSceneMode);
+	}
+	public void LoadScene(SceneReference sceneReference) => this.LoadScene(sceneReference: sceneReference, loadSceneMode: LoadSceneMode.Single);
+
+	[SerializeField] private SceneReference _runtimeScene;
+	public SceneReference _RuntimeScene => this._runtimeScene;
+
+	public void LoadScene(SceneReferenceCollection sceneReferenceCollection, LoadSceneMode loadSceneMode)
+	{
+		switch (loadSceneMode)
+		{
+			case LoadSceneMode.Single:
+
+				this.LoadScene(
+					sceneReference: this._runtimeScene,
+					loadSceneMode: LoadSceneMode.Single
+				);
+
+				this.LoadScene(
+					sceneReferenceCollection: sceneReferenceCollection,
+					loadSceneMode: LoadSceneMode.Additive
+				);
+
+				break;
+			case LoadSceneMode.Additive:
+
+				for (int a = 0; a < sceneReferenceCollection._ScenesReferences.Length; a++)
+				{
+					this.LoadScene(
+						sceneReferenceCollection._ScenesReferences[a],
+						loadSceneMode: LoadSceneMode.Additive
+					);
+				}
+
+				for (int a = 0; a < sceneReferenceCollection._SceneReferenceCollections.Length; a++)
+				{
+					this.LoadScene(
+						sceneReferenceCollection: sceneReferenceCollection._SceneReferenceCollections[a],
+						loadSceneMode: LoadSceneMode.Additive
+					);
+				}
+
+				break;
+		}
+	}
+	public void LoadScene(SceneReferenceCollection sceneReferenceCollection) => this.LoadScene(sceneReferenceCollection: sceneReferenceCollection, loadSceneMode: LoadSceneMode.Single);
+
 	#endregion
 
 	public void Exit()
