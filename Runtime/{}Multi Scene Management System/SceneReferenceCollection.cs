@@ -28,7 +28,7 @@ public class SceneReferenceCollection : ScriptableObject
 
 		for (int a = 0; a < sceneReferenceCollection._scenesReferences.Length; a++)
 		{
-			EditorSceneManager.OpenScene(sceneReferenceCollection._scenesReferences[a], OpenSceneMode.Additive);
+			EditorSceneManager.OpenScene(sceneReferenceCollection._scenesReferences[a].ScenePath, OpenSceneMode.Additive);
 		}
 
 		for (int a = 0; a < sceneReferenceCollection._sceneReferenceCollections.Length; a++)
@@ -54,7 +54,7 @@ public class SceneReferenceCollection : ScriptableObject
 
 				for (int a = 0; a < sceneReferenceCollection._scenesReferences.Length; a++)
 				{
-					EditorSceneManager.OpenScene(sceneReferenceCollection._scenesReferences[a], OpenSceneMode.Additive);
+					EditorSceneManager.OpenScene(sceneReferenceCollection._scenesReferences[a].ScenePath, OpenSceneMode.Additive);
 				}
 
 				for (int a = 0; a < sceneReferenceCollection._sceneReferenceCollections.Length; a++)

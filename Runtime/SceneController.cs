@@ -153,7 +153,7 @@ public class SceneController : MonoBehaviourSingleton<SceneController>
 
 	public void LoadScene(SceneReference sceneReference, LoadSceneMode loadSceneMode)
 	{
-		SceneManager.LoadScene(sceneReference, loadSceneMode);
+		SceneManager.LoadScene(sceneReference.ScenePath, loadSceneMode);
 	}
 	public void LoadScene(SceneReference sceneReference) => this.LoadScene(sceneReference: sceneReference, loadSceneMode: LoadSceneMode.Single);
 

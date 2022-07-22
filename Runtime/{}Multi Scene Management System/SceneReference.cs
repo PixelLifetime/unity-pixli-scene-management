@@ -48,7 +48,7 @@ public class SceneReference : ISerializationCallbackReceiver
 #if UNITY_EDITOR
 			return this.GetSceneAssetPath();
 #else
-            return scenePath;
+            return this._scenePath;
 #endif
 		}
 		set
@@ -58,11 +58,6 @@ public class SceneReference : ISerializationCallbackReceiver
 			this._sceneAsset = this.LoadSceneAssetAtPath();
 #endif
 		}
-	}
-
-	public static implicit operator string(SceneReference sceneReference)
-	{
-		return sceneReference.ScenePath;
 	}
 
 	public void OnBeforeSerialize()
