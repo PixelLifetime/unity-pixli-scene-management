@@ -12,7 +12,7 @@ using UnityEditor.SceneManagement;
 using Unity.EditorCoroutines.Editor;
 #endif
 
-[CreateAssetMenu(fileName = "[Scene Reference Collection]", menuName = "[Scene Reference Collection]", order = 199)]
+[CreateAssetMenu(fileName = "[Scene Reference Collection]", menuName = "[Scene Reference]/[Scene Reference Collection]", order = 199)]
 public class SceneReferenceCollection : ScriptableObject
 {
 	[SerializeField] private SceneReference[] _scenesReferences;

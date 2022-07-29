@@ -7,6 +7,7 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using System;
+using PixLi;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -151,16 +152,19 @@ public class SceneController : MonoBehaviourSingleton<SceneController>
 
 	#region Scene Reference
 
-	public void LoadScene(SceneReference sceneReference, LoadSceneMode loadSceneMode)
-	{
-		SceneManager.LoadScene(sceneReference.ScenePath, loadSceneMode);
-	}
-	public void LoadScene(SceneReference sceneReference) => this.LoadScene(sceneReference: sceneReference, loadSceneMode: LoadSceneMode.Single);
+	public void LoadScene(SceneReference sceneReference, LoadSceneMode loadSceneMode) => SceneManager.LoadScene(
+		sceneName: sceneReference.ScenePath,
+		mode: loadSceneMode
+	);
+	public void LoadScene(SceneReference sceneReference) => this.LoadScene(
+		sceneReference: sceneReference,
+		loadSceneMode: LoadSceneMode.Single
+	);
 
 	[SerializeField] private SceneReference _runtimeScene;
 	public SceneReference _RuntimeScene => this._runtimeScene;
 
-	public void LoadScene(SceneReferenceCollection sceneReferenceCollection, LoadSceneMode loadSceneMode)
+	public void LoadSceneReferenceCollection(SceneReferenceCollection sceneReferenceCollection, LoadSceneMode loadSceneMode)
 	{
 		switch (loadSceneMode)
 		{
@@ -171,10 +175,12 @@ public class SceneController : MonoBehaviourSingleton<SceneController>
 					loadSceneMode: LoadSceneMode.Single
 				);
 
-				this.LoadScene(
+				this.LoadSceneReferenceCollection(
 					sceneReferenceCollection: sceneReferenceCollection,
 					loadSceneMode: LoadSceneMode.Additive
 				);
+
+				SceneReferenceCollectionsTracker._Instance.SetActive(sceneReferenceCollection: sceneReferenceCollection);
 
 				break;
 			case LoadSceneMode.Additive:
@@ -182,14 +188,14 @@ public class SceneController : MonoBehaviourSingleton<SceneController>
 				for (int a = 0; a < sceneReferenceCollection._ScenesReferences.Length; a++)
 				{
 					this.LoadScene(
-						sceneReferenceCollection._ScenesReferences[a],
+						sceneReference: sceneReferenceCollection._ScenesReferences[a],
 						loadSceneMode: LoadSceneMode.Additive
 					);
 				}
 
 				for (int a = 0; a < sceneReferenceCollection._SceneReferenceCollections.Length; a++)
 				{
-					this.LoadScene(
+					this.LoadSceneReferenceCollection(
 						sceneReferenceCollection: sceneReferenceCollection._SceneReferenceCollections[a],
 						loadSceneMode: LoadSceneMode.Additive
 					);
@@ -198,7 +204,38 @@ public class SceneController : MonoBehaviourSingleton<SceneController>
 				break;
 		}
 	}
-	public void LoadScene(SceneReferenceCollection sceneReferenceCollection) => this.LoadScene(sceneReferenceCollection: sceneReferenceCollection, loadSceneMode: LoadSceneMode.Single);
+	public void LoadSceneReferenceCollection(SceneReferenceCollection sceneReferenceCollection) => this.LoadSceneReferenceCollection(
+		sceneReferenceCollection: sceneReferenceCollection,
+		loadSceneMode: LoadSceneMode.Single
+	);
+
+	public void LoadPreviousSceneReferenceCollection(LoadSceneMode loadSceneMode)
+	{
+		int previousSceneReferenceCollectionIndex = SceneReferenceCollectionsTracker._Instance.ActiveSceneReferenceCollectionIndex_ - 1;
+
+		if (previousSceneReferenceCollectionIndex >= 0)
+		{
+			this.LoadSceneReferenceCollection(
+				sceneReferenceCollection: SceneReferenceCollectionsTracker._Instance.GetSceneReferenceCollection(index: previousSceneReferenceCollectionIndex),
+				loadSceneMode: loadSceneMode
+			);
+		}
+	}
+	public void LoadPreviousSceneReferenceCollection() => this.LoadPreviousSceneReferenceCollection(loadSceneMode: LoadSceneMode.Single);
+
+	public void LoadNextSceneReferenceCollection(LoadSceneMode loadSceneMode)
+	{
+		int nextSceneReferenceCollectionIndex = SceneReferenceCollectionsTracker._Instance.ActiveSceneReferenceCollectionIndex_ + 1;
+
+		if (nextSceneReferenceCollectionIndex < SceneReferenceCollectionsTracker._Instance._SceneReferenceCollectionsQuantity)
+		{
+			this.LoadSceneReferenceCollection(
+				sceneReferenceCollection: SceneReferenceCollectionsTracker._Instance.GetSceneReferenceCollection(index: nextSceneReferenceCollectionIndex),
+				loadSceneMode: loadSceneMode
+			);
+		}
+	}
+	public void LoadNextSceneReferenceCollection() => this.LoadNextSceneReferenceCollection(loadSceneMode: LoadSceneMode.Single);
 
 	#endregion
 
