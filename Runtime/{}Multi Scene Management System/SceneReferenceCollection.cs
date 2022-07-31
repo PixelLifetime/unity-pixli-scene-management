@@ -26,10 +26,14 @@ public class SceneReferenceCollection : ScriptableObject
 	{
 		Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
 
+		Scene lastOpenedScene = scene;
+
 		for (int a = 0; a < sceneReferenceCollection._scenesReferences.Length; a++)
 		{
-			EditorSceneManager.OpenScene(sceneReferenceCollection._scenesReferences[a].ScenePath, OpenSceneMode.Additive);
+			lastOpenedScene = EditorSceneManager.OpenScene(sceneReferenceCollection._scenesReferences[a].ScenePath, OpenSceneMode.Additive);
 		}
+
+		EditorSceneManager.SetActiveScene(scene: lastOpenedScene);
 
 		for (int a = 0; a < sceneReferenceCollection._sceneReferenceCollections.Length; a++)
 		{
